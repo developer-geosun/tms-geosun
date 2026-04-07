@@ -32,7 +32,7 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Build Angular application
-        run: npx ng build --configuration=production --base-href=/tms-geosun-base/
+        run: npx ng build --configuration=production --base-href=/tms-geosun/
 
       - name: Configure Git
         run: |
@@ -46,14 +46,14 @@ jobs:
           set -e
           
           # Проверяем, что папка dist существует перед переключением веток
-          if [ ! -d "dist/tms-geosun-base" ]; then
-            echo "Error: dist/tms-geosun-base directory not found"
+          if [ ! -d "dist/tms-geosun" ]; then
+            echo "Error: dist/tms-geosun directory not found"
             exit 1
           fi
           
           # Сохраняем собранные файлы во временную директорию перед переключением веток
           mkdir -p /tmp/build-output
-          cp -r dist/tms-geosun-base/* /tmp/build-output/
+          cp -r dist/tms-geosun/* /tmp/build-output/
           
           # Настраиваем remote для push в тот же репозиторий
           git remote set-url origin https://${DEPLOY_TOKEN}@github.com/${{ github.repository }}.git

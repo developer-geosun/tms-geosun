@@ -1,5 +1,5 @@
 {
-  "name": "tms-geosun-base",
+  "name": "tms-geosun",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "echo \"Tests are temporarily disabled\"",
-    "deploy": "ng build --configuration production --base-href=/tms-geosun-base/ && npx gh-pages@latest -d dist/tms-geosun-base"
+    "deploy": "ng build --configuration production --base-href=/tms-geosun/ && npx gh-pages@latest -d dist/tms-geosun"
   },
   "private": true,
   "dependencies": {

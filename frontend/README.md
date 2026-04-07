@@ -1,4 +1,4 @@
-# tms-geosun-base
+# tms-geosun
 
 Angular 21 application for GeoSun transport management scenarios.
 
@@ -38,7 +38,7 @@ Production build:
 npm run build
 ```
 
-Artifacts are generated in `dist/tms-geosun-base`.
+Artifacts are generated in `dist/tms-geosun`.
 
 ## Tests
 
@@ -64,8 +64,8 @@ npm run deploy
 
 The deploy command uses:
 
-- base href: `/tms-geosun-base/`
-- output directory: `dist/tms-geosun-base`
+- base href: `/tms-geosun/`
+- output directory: `dist/tms-geosun`
 
 ## Useful commands
 

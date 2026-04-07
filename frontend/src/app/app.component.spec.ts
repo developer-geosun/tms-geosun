@@ -35,10 +35,10 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'tms-geosun-base'`, () => {
+  it(`should have as title 'tms-geosun'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('tms-geosun-base');
+    expect(app.title).toEqual('tms-geosun');
   });
 
   it('should render toolbar, content outlet area and footer', () => {

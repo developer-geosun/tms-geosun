@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "tms-geosun-base": {
+    "tms-geosun": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -21,7 +21,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/tms-geosun-base",
+            "outputPath": "dist/tms-geosun",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -75,14 +75,14 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "buildTarget": "tms-geosun-base:build"
+            "buildTarget": "tms-geosun:build"
           },
           "configurations": {
             "production": {
-              "buildTarget": "tms-geosun-base:build:production"
+              "buildTarget": "tms-geosun:build:production"
             },
             "development": {
-              "buildTarget": "tms-geosun-base:build:development"
+              "buildTarget": "tms-geosun:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -90,7 +90,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "tms-geosun-base:build"
+            "buildTarget": "tms-geosun:build"
           }
         },
         "test": {

@@ -12,7 +12,7 @@ import { FooterComponent } from './layout/footer/footer.component';
   imports: [RouterOutlet, ToolbarComponent, FooterComponent]
 })
 export class AppComponent implements OnInit {
-  title = 'tms-geosun-base';
+  title = 'tms-geosun';
 
   constructor(private languageService: LanguageService) {}
 

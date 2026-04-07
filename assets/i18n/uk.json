@@ -1,0 +1,46 @@
+{
+  "common": {
+    "geosun": "ТОВ Геосан",
+    "allRightsReserved": "Всі права захищені",
+    "returnToHome": "Повернутися на головну",
+    "designedBy": "Розроблено Максимом Горєліковим (Ферматс)"
+  },
+  "pages": {
+    "main": {
+      "title": "Головна сторінка",
+      "welcome": "Ласкаво просимо на головну сторінку!"
+    },
+    "notFound": {
+      "title": "404",
+      "message": "Сторінка не знайдена"
+    },
+    "stopService": {
+      "title": "Сервіс тимчасово недоступний",
+      "message": "Тривають технічні роботи",
+      "subMessage": "Ми працюємо над покращенням сервісу",
+      "tryLater": "Будь ласка, спробуйте пізніше"
+    }
+  },
+  "theme": {
+    "switchToDark": "Переключити на темну тему",
+    "switchToLight": "Переключити на світлу тему",
+    "darkTheme": "Темна тема",
+    "lightTheme": "Світла тема"
+  },
+  "language": {
+    "select": "Виберіть мову",
+    "ukrainian": "Українська",
+    "english": "English",
+    "russian": "Русский"
+  },
+  "settings": {
+    "buttonLabel": "Налаштування",
+    "languageSection": "Мова",
+    "themeSection": "Тема"
+  },
+  "auth": {
+    "register": "Реєстрація",
+    "login": "Увійти"
+  }
+}
+

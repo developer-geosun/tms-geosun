@@ -1,3 +1,4 @@
+# Деплой Angular з frontend/ на гілку gh-pages (GitHub Pages: Settings → Pages → branch gh-pages / root)
 name: Deploy to GitHub Pages
 
 on:
@@ -14,7 +15,7 @@ jobs:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     permissions:
       contents: write
-    
+
     steps:
       - name: Checkout source repository
         uses: actions/checkout@v5
@@ -27,11 +28,14 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
+        working-directory: frontend
         run: npm ci --legacy-peer-deps
 
       - name: Build Angular application
+        working-directory: frontend
         run: npx ng build --configuration=production --base-href=/tms-geosun/
 
       - name: Configure Git
@@ -44,51 +48,29 @@ jobs:
           DEPLOY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -e
-          
-          # Проверяем, что папка dist существует перед переключением веток
-          if [ ! -d "dist/tms-geosun" ]; then
-            echo "Error: dist/tms-geosun directory not found"
+          DIST="frontend/dist/tms-geosun"
+          if [ ! -d "$DIST" ]; then
+            echo "Error: $DIST directory not found"
             exit 1
           fi
-          
-          # Сохраняем собранные файлы во временную директорию перед переключением веток
           mkdir -p /tmp/build-output
-          cp -r dist/tms-geosun/* /tmp/build-output/
-          
-          # Настраиваем remote для push в тот же репозиторий
+          cp -r "$DIST"/* /tmp/build-output/
           git remote set-url origin https://${DEPLOY_TOKEN}@github.com/${{ github.repository }}.git
-          
-          # Проверяем, существует ли ветка gh-pages
           git fetch origin gh-pages 2>/dev/null || true
-          
           if git show-ref --verify --quiet refs/remotes/origin/gh-pages 2>/dev/null; then
-            # Ветка существует, переключаемся на неё
             git checkout -b gh-pages origin/gh-pages 2>/dev/null || git checkout gh-pages
             git pull origin gh-pages || true
           else
-            # Ветка не существует, создаем новую orphan ветку
             git checkout --orphan gh-pages
-            # Удаляем все файлы из индекса
             git rm -rf . --quiet || true
           fi
-          
-          # Удаляем все файлы кроме .git из рабочей директории
           find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} + 2>/dev/null || true
-          
-          # Копируем собранные файлы из временной директории
           cp -r /tmp/build-output/* .
-          
-          # Создаем .nojekyll для правильной работы GitHub Pages с Angular
           touch .nojekyll
-          
-          # Добавляем все файлы
           git add -A
-          
-          # Коммитим изменения
           if ! git diff --staged --quiet; then
             git commit -m "Deploy: $(date +'%Y-%m-%d %H:%M:%S') [skip ci]"
             git push -u origin gh-pages
           else
             echo "No changes to commit"
           fi
-

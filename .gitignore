@@ -6,9 +6,9 @@ dist/
 # Локальна конфігурація clasp (скопіюйте з .clasp.json.example і додайте scriptId)
 backend/.clasp.json
 
-# IDE / ОС
+# IDE / ОС (лише корінь репо; frontend/.vscode залишається з шаблону Angular)
 .idea/
-.vscode/
+/.vscode/
 *.log
 .DS_Store
 Thumbs.db

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { SocialNetworkType } from '../../models/social-network.model';
 
 /**
@@ -8,6 +8,7 @@ import { SocialNetworkType } from '../../models/social-network.model';
   selector: 'app-social-icon',
   templateUrl: './social-icon.component.html',
   styleUrls: ['./social-icon.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   host: {
     '[style.--hover-color]': 'hoverColor',
@@ -63,6 +64,10 @@ export class SocialIconComponent {
       linkedin: 'LinkedIn'
     };
     return titles[this.type] || 'Social Network';
+  }
+
+  get ariaLabel(): string {
+    return this.displayTitle;
   }
 }
 

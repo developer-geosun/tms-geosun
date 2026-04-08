@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 export type Language = 'uk' | 'en' | 'ru';
 
@@ -15,36 +16,32 @@ export class LanguageService {
   private readonly SUPPORTED_LANGUAGES: Language[] = ['uk', 'en', 'ru'];
   private readonly DEFAULT_LANGUAGE: Language = 'uk';
   
-  private languageSubject: BehaviorSubject<Language>;
-  public language$: Observable<Language>;
+  private readonly translateService = inject(TranslateService);
+  private readonly languageState = signal<Language>(this.getInitialLanguage());
+  readonly language = this.languageState.asReadonly();
+  readonly isDefaultLanguage = computed(() => this.languageState() === this.DEFAULT_LANGUAGE);
+  readonly language$: Observable<Language> = toObservable(this.language);
 
-  constructor(private translateService: TranslateService) {
-    // Отримуємо збережену мову або визначаємо за замовчуванням
-    const initialLanguage = this.getInitialLanguage();
-    this.languageSubject = new BehaviorSubject<Language>(initialLanguage);
-    this.language$ = this.languageSubject.asObservable();
-    
+  constructor() {
     // Налаштовуємо TranslateService
     this.translateService.setDefaultLang(this.DEFAULT_LANGUAGE);
-    this.setLanguage(initialLanguage);
+    this.setLanguage(this.languageState());
   }
 
   /**
    * Отримує поточну мову
    */
   get currentLanguage(): Language {
-    return this.languageSubject.value;
+    return this.languageState();
   }
 
   /**
    * Встановлює мову інтерфейсу
    */
-  setLanguage(language: Language): void {
-    if (!this.SUPPORTED_LANGUAGES.includes(language)) {
-      language = this.DEFAULT_LANGUAGE;
-    }
-    
-    this.languageSubject.next(language);
+  setLanguage(nextLanguage: Language): void {
+    const language = this.SUPPORTED_LANGUAGES.includes(nextLanguage) ? nextLanguage : this.DEFAULT_LANGUAGE;
+
+    this.languageState.set(language);
     this.translateService.use(language);
     this.updateHtmlLang(language);
     this.saveLanguage(language);

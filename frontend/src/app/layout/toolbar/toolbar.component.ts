@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, HostListener, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostListener, inject, signal, ViewEncapsulation } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
@@ -19,6 +19,7 @@ import { SocialIconComponent } from '../../shared/components/social-icon/social-
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   standalone: true,
   imports: [
@@ -34,12 +35,15 @@ import { SocialIconComponent } from '../../shared/components/social-icon/social-
   ]
 })
 export class ToolbarComponent {
-  // Використовуємо async pipe для автоматичної відписки
-  theme$ = this.themeService.theme$;
-  language$ = this.languageService.language$;
-  currentLanguage: Language = 'uk';
-  currentTheme: Theme = 'azure-blue';
-  isLogoIconsOpen = false;
+  private readonly themeService = inject(ThemeService);
+  readonly configService = inject(ConfigService);
+  private readonly translateService = inject(TranslateService);
+  private readonly languageService = inject(LanguageService);
+  private readonly elementRef = inject(ElementRef<HTMLElement>);
+
+  readonly currentLanguage = this.languageService.language;
+  readonly currentTheme = this.themeService.theme;
+  readonly isLogoIconsOpen = signal(false);
   
   // Доступні мови
   languages: { code: Language; label: string }[] = [
@@ -55,22 +59,7 @@ export class ToolbarComponent {
     { code: 'cyan-orange', label: 'Cyan & Orange' }
   ];
 
-  constructor(
-    private themeService: ThemeService,
-    public configService: ConfigService,
-    private translateService: TranslateService,
-    private languageService: LanguageService,
-    private elementRef: ElementRef<HTMLElement>
-  ) {
-    // Підписуємося на зміни мови
-    this.language$.subscribe(lang => {
-      this.currentLanguage = lang;
-    });
-
-    this.theme$.subscribe(theme => {
-      this.currentTheme = theme;
-    });
-  }
+  constructor() {}
 
   /**
    * Змінює тему інтерфейсу
@@ -88,12 +77,12 @@ export class ToolbarComponent {
 
   toggleLogoIcons(event: Event): void {
     event.stopPropagation();
-    this.isLogoIconsOpen = !this.isLogoIconsOpen;
+    this.isLogoIconsOpen.update((isOpen) => !isOpen);
   }
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
-    if (!this.isLogoIconsOpen) {
+    if (!this.isLogoIconsOpen()) {
       return;
     }
 
@@ -103,7 +92,7 @@ export class ToolbarComponent {
     }
 
     if (!this.elementRef.nativeElement.contains(clickedElement)) {
-      this.isLogoIconsOpen = false;
+      this.isLogoIconsOpen.set(false);
     }
   }
 
@@ -142,7 +131,7 @@ export class ToolbarComponent {
       }
     };
 
-    return fallbackByLanguage[this.currentLanguage][key];
+    return fallbackByLanguage[this.currentLanguage()][key];
   }
 }
 

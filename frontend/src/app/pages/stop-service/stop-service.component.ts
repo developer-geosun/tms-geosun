@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
 /**
@@ -8,6 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
   selector: 'app-stop-service',
   templateUrl: './stop-service.component.html',
   styleUrls: ['./stop-service.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [TranslateModule]
 })

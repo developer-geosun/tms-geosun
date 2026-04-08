@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 
 /**
@@ -8,6 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [TranslateModule]
 })

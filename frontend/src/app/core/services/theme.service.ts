@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { computed, Injectable, signal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { Observable } from 'rxjs';
 
 export type Theme = 'rose-red' | 'azure-blue' | 'magenta-violet' | 'cyan-orange';
 
@@ -17,29 +18,27 @@ export class ThemeService {
     'theme-magenta-violet',
     'theme-cyan-orange'
   ];
-  private themeSubject: BehaviorSubject<Theme>;
-  public theme$: Observable<Theme>;
+  private readonly themeState = signal<Theme>(this.getSavedTheme());
+  readonly theme = this.themeState.asReadonly();
+  readonly themeClass = computed(() => `theme-${this.themeState()}`);
+  readonly theme$: Observable<Theme> = toObservable(this.theme);
 
   constructor() {
-    // Отримуємо збережену тему або використовуємо базову за замовчуванням
-    const savedTheme = this.getSavedTheme();
-    this.themeSubject = new BehaviorSubject<Theme>(savedTheme);
-    this.theme$ = this.themeSubject.asObservable();
-    this.applyTheme(savedTheme);
+    this.applyTheme(this.themeState());
   }
 
   /**
    * Отримує поточну тему
    */
   get currentTheme(): Theme {
-    return this.themeSubject.value;
+    return this.themeState();
   }
 
   /**
    * Встановлює конкретну тему
    */
   setTheme(theme: Theme): void {
-    this.themeSubject.next(theme);
+    this.themeState.set(theme);
     this.applyTheme(theme);
     this.saveTheme(theme);
   }

@@ -73,3 +73,43 @@ The deploy command uses:
 npm run watch
 npm run ng -- version
 ```
+
+## AI setup (Cursor)
+
+To use Angular AI tooling with Cursor in this project:
+
+1. Create `frontend/.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "angular-cli": {
+      "command": "npx",
+      "args": ["-y", "@angular/cli", "mcp"]
+    }
+  }
+}
+```
+
+2. Optional safe mode (read-only MCP tools):
+
+```json
+{
+  "mcpServers": {
+    "angular-cli": {
+      "command": "npx",
+      "args": ["-y", "@angular/cli", "mcp", "--read-only"]
+    }
+  }
+}
+```
+
+3. Add Angular AI rules file at `frontend/.cursor/rules/angular-best-practices.mdc`.
+
+4. Reload Cursor window/workspace.
+
+### Quick verification
+
+- Open a new Cursor chat from `frontend`.
+- Ask for Angular guidance (for example, request best practices for signals or modern template control flow).
+- Confirm the assistant responds using Angular-aware recommendations and project context.

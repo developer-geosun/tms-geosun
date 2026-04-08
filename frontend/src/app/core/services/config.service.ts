@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { APP_CONFIG } from '../../shared/constants/app.constants';
+import { APP_CONFIG, AppConfig } from '../../shared/constants/app.constants';
 import { environment } from '../../../environments/environment';
 
 /**
@@ -10,8 +10,8 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class ConfigService {
-  // Конфігурація додатку
-  readonly config = APP_CONFIG;
+  // Runtime-конфігурація має пріоритет над значеннями за замовчуванням
+  readonly config: AppConfig = this.getRuntimeConfig();
   
   // Налаштування середовища
   readonly environment = environment;
@@ -94,6 +94,27 @@ export class ConfigService {
    */
   get isServiceStopped(): boolean {
     return this.config.isServiceStopped;
+  }
+
+  private getRuntimeConfig(): AppConfig {
+    const runtimeConfig = this.readRuntimeConfig();
+    return {
+      ...APP_CONFIG,
+      ...runtimeConfig
+    };
+  }
+
+  private readRuntimeConfig(): Partial<AppConfig> {
+    if (typeof window === 'undefined') {
+      return {};
+    }
+
+    const candidate = (window as Window & { __APP_CONFIG__?: unknown }).__APP_CONFIG__;
+    if (!candidate || typeof candidate !== 'object') {
+      return {};
+    }
+
+    return candidate as Partial<AppConfig>;
   }
 }
 

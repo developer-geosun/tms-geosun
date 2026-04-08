@@ -1,4 +1,4 @@
-// Константи додатку
+// Константи додатку за замовчуванням
 export const APP_CONFIG = {
   phoneNumber: '+380984894118', // Номер для toolbar
   phoneNumberForWhatsApp: '380984894118', // без знака +, для toolbar
@@ -10,4 +10,6 @@ export const APP_CONFIG = {
   logoUrl: 'https://www.geosun.net.ua',
   isServiceStopped: false // Настройка остановки сервиса: при true все страницы редиректят на /stop-service
 };
+
+export type AppConfig = typeof APP_CONFIG;
 

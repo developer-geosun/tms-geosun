@@ -18,37 +18,41 @@
       <app-social-icon type="facebook" [url]="configService.facebookUrl"></app-social-icon>
     </div>
   </div>
-  
-  <span class="spacer"></span>
 
-  <div class="auth-actions">
-    <button
-      mat-mini-fab
-      type="button"
-      class="auth-button register-button"
-      [attr.aria-label]="'auth.register' | translate"
-      [attr.title]="'auth.register' | translate">
-      <mat-icon fontIcon="person_add" aria-hidden="true"></mat-icon>
-    </button>
-    <button
-      mat-mini-fab
-      type="button"
-      class="auth-button login-button"
-      [attr.aria-label]="'auth.login' | translate"
-      [attr.title]="'auth.login' | translate">
-      <mat-icon fontIcon="login" aria-hidden="true"></mat-icon>
-    </button>
+  <div class="toolbar-end">
+    <span class="spacer"></span>
+
+    <div class="toolbar-actions">
+      <div class="auth-actions">
+        <button
+          mat-mini-fab
+          type="button"
+          class="auth-button register-button"
+          [attr.aria-label]="'auth.register' | translate"
+          [attr.title]="'auth.register' | translate">
+          <mat-icon fontIcon="person_add" aria-hidden="true"></mat-icon>
+        </button>
+        <button
+          mat-mini-fab
+          type="button"
+          class="auth-button login-button"
+          [attr.aria-label]="'auth.login' | translate"
+          [attr.title]="'auth.login' | translate">
+          <mat-icon fontIcon="login" aria-hidden="true"></mat-icon>
+        </button>
+      </div>
+
+      <button
+        mat-mini-fab
+        class="settings-button"
+        type="button"
+        [matMenuTriggerFor]="settingsMenu"
+        [attr.aria-label]="'settings.buttonLabel' | translate"
+        [attr.title]="'settings.buttonLabel' | translate">
+        <mat-icon fontIcon="settings" aria-hidden="true"></mat-icon>
+      </button>
+    </div>
   </div>
-
-  <button
-    mat-mini-fab
-    class="settings-button"
-    type="button"
-    [matMenuTriggerFor]="settingsMenu"
-    [attr.aria-label]="'settings.buttonLabel' | translate"
-    [attr.title]="'settings.buttonLabel' | translate">
-    <mat-icon fontIcon="settings" aria-hidden="true"></mat-icon>
-  </button>
 </mat-toolbar>
 
 <mat-menu #settingsMenu="matMenu" class="settings-menu" panelClass="settings-menu-panel">

@@ -2,10 +2,11 @@ mat-toolbar {
   padding: .5rem !important;
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 6px;
   height: auto !important;
   min-height: auto !important;
+  // overflow не на тулбарі — інакше обрізається .logo-hover-icons під логотипом
 }
 
 .logo-icons-group,
@@ -18,6 +19,7 @@ mat-toolbar {
 .logo-icons-group {
   order: 1;
   position: relative;
+  flex-shrink: 0;
 }
 
 .logo-hover-icons {
@@ -63,20 +65,39 @@ app-social-icon {
   flex-shrink: 0;
 }
 
+// Права частина тулбара (без overflow/скролу — випадаючі іконки під логотипом поза цим блоком)
+.toolbar-end {
+  order: 2;
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 .spacer {
   flex: 1 1 auto;
   min-width: 8px;
-  order: 2;
+}
+
+// Група кнопок авторизації та налаштувань — без переносу та стиснення
+.toolbar-actions {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 6px;
 }
 
 .auth-actions {
-  order: 3;
   display: inline-flex;
   align-items: center;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
   gap: 8px;
 }
 
 .auth-button {
+  flex-shrink: 0;
   --mdc-fab-container-shape: 20px;
   --mdc-fab-small-container-color: var(--mat-sys-secondary-container);
   --mdc-fab-small-foreground-color: var(--mat-sys-on-secondary-container);
@@ -98,7 +119,7 @@ app-social-icon {
 }
 
 .settings-button {
-  order: 4;
+  flex-shrink: 0;
   --mdc-fab-container-shape: 20px;
   --mdc-fab-small-container-color: var(--mat-sys-secondary-container);
   --mdc-fab-small-foreground-color: var(--mat-sys-on-secondary-container);
@@ -279,21 +300,12 @@ a.company-site-button:active {
 
 @media (min-width: 600px) {
   mat-toolbar {
-    flex-wrap: nowrap;
     gap: 8px;
     min-height: 64px !important;
   }
-}
 
-@media (max-width: 600px) {
-  .auth-actions {
-    width: 100%;
-    justify-content: flex-end;
-    order: 4;
-  }
-
-  .settings-button {
-    order: 5;
+  .toolbar-actions {
+    gap: 8px;
   }
 }
 

@@ -8,7 +8,22 @@
   "pages": {
     "main": {
       "title": "Main page",
-      "welcome": "Welcome to the main page!"
+      "welcome": "Welcome to the main page!",
+      "signedInAs": "Signed in as",
+      "managerSection": "Manager section is available",
+      "adminSection": "Admin section is available"
+    },
+    "login": {
+      "title": "Sign in",
+      "subtitle": "Use email and password to continue",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in",
+      "loading": "Signing in...",
+      "success": "Signed in successfully",
+      "error401": "Invalid email or password",
+      "error403": "You do not have enough permissions",
+      "errorGeneric": "Sign in failed, please try again"
     },
     "notFound": {
       "title": "404",
@@ -40,7 +55,8 @@
   },
   "auth": {
     "register": "Sign up",
-    "login": "Sign in"
+    "login": "Sign in",
+    "logout": "Sign out"
   }
 }
 

@@ -7,9 +7,9 @@
 
 ## Что уже умеет система
 
-- Frontend на Angular 21 с маршрутизацией и базовой конфигурацией приложения.
+- Frontend на Angular 21 с маршрутизацией, i18n и MVP auth-слоем (`AuthService`, `AuthGuard`, `AuthInterceptor`, login-page).
 - Поддержка i18n через `@ngx-translate/core` (язык по умолчанию: `uk`).
-- Базовый backend на Google Apps Script с тестовым endpoint (`doGet` -> JSON `{ ok: true, service: "tms-geosun" }`).
+- Backend на Google Apps Script с auth-router (`doGet` + `doPost`) и базовыми auth endpoint-ами.
 - Деплой frontend на GitHub Pages через GitHub Actions (`main`/`master`).
 
 ## Как работает (высокоуровнево)
@@ -25,14 +25,17 @@
 
 ## Основные API (текущее состояние)
 
-- `GET /` (GAS `doGet`) — health-check/базовый ответ сервиса.
+- `GET /` — health-check/базовый ответ сервиса.
+- `POST /auth/login` — вход пользователя (`access token` + `refresh token` + профиль).
+- `POST /auth/refresh` — обновление `access token`.
+- `POST /auth/logout` — завершение refresh-сессии.
+- `GET /auth/me` — профиль текущего пользователя (требует `Authorization: Bearer <access token>`).
 
-Планируемые API (ближайшие):
-
-- `POST /auth/login` — вход пользователя.
-- `POST /auth/refresh` — обновление токена доступа.
-- `POST /auth/logout` — завершение сессии.
-- `GET /auth/me` — профиль текущего пользователя.
+### Поведение auth в MVP
+- Пароли валидируются по email/password, backend хранит password hash и роли пользователя.
+- Защищенные endpoint-ы проверяют `access token` и роли (RBAC: `admin`, `manager`, `user`).
+- Frontend автоматически выполняет одноразовый refresh при `401` через HTTP interceptor.
+- При неуспешном refresh frontend очищает auth state и редиректит на `/login`.
 
 ## Структура проекта
 
@@ -51,6 +54,10 @@
 - Backend (GAS):
   - работа через `clasp` и `backend/src/Code.gs`
   - деплой как Web App в Google Apps Script (при необходимости)
+  - для MVP auth нужно:
+    - задать Script Property `AUTH_SECRET`
+    - подготовить таблицы `users` и `refresh_sessions` (или дать скрипту создать их автоматически)
+    - заполнить `users` тестовыми пользователями (`id`, `email`, `passwordHash`, `roles`, `status`)
 
 ## Важные правила разработки
 
@@ -66,4 +73,5 @@
 - `.github/workflows/deploy.yml` — логика деплоя на GitHub Pages.
 - `backend/appsscript.json` — настройки runtime/логирования для GAS.
 - `backend/src/Code.gs` — публичные web endpoint-функции (`doGet` и будущие `doPost`-роуты).
+ - `backend/src/Code.gs` — публичные endpoint-функции и auth/security-логика (token, refresh-сессии, RBAC, throttling).
 

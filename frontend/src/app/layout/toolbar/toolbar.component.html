@@ -24,22 +24,27 @@
 
     <div class="toolbar-actions">
       <div class="auth-actions">
-        <button
-          mat-mini-fab
-          type="button"
-          class="auth-button register-button"
-          [attr.aria-label]="'auth.register' | translate"
-          [attr.title]="'auth.register' | translate">
-          <mat-icon fontIcon="person_add" aria-hidden="true"></mat-icon>
-        </button>
-        <button
-          mat-mini-fab
-          type="button"
-          class="auth-button login-button"
-          [attr.aria-label]="'auth.login' | translate"
-          [attr.title]="'auth.login' | translate">
-          <mat-icon fontIcon="login" aria-hidden="true"></mat-icon>
-        </button>
+        @if (!isAuthenticated()) {
+          <button
+            mat-mini-fab
+            type="button"
+            class="auth-button login-button"
+            (click)="navigateToLogin()"
+            [attr.aria-label]="'auth.login' | translate"
+            [attr.title]="'auth.login' | translate">
+            <mat-icon fontIcon="login" aria-hidden="true"></mat-icon>
+          </button>
+        } @else {
+          <button
+            mat-mini-fab
+            type="button"
+            class="auth-button register-button"
+            (click)="logout()"
+            [attr.aria-label]="'auth.logout' | translate"
+            [attr.title]="'auth.logout' | translate">
+            <mat-icon fontIcon="logout" aria-hidden="true"></mat-icon>
+          </button>
+        }
       </div>
 
       <button

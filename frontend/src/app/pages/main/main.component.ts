@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { AuthService } from '../../core/services/auth.service';
 
 /**
  * Компонент головної сторінки
@@ -13,6 +14,11 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [TranslateModule]
 })
 export class MainComponent {
+  private readonly authService = inject(AuthService);
+
+  readonly user = this.authService.user;
+  readonly canSeeManagerSection = computed(() => this.authService.hasAnyRole(['admin', 'manager']));
+  readonly canSeeAdminSection = computed(() => this.authService.hasAnyRole(['admin']));
 
 }
 

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, HostListener, inject, signal, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,6 +10,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ThemeService, Theme } from '../../core/services/theme.service';
 import { ConfigService } from '../../core/services/config.service';
 import { LanguageService, Language } from '../../core/services/language.service';
+import { AuthService } from '../../core/services/auth.service';
 import { LogoComponent } from '../../shared/components/logo/logo.component';
 import { SocialIconComponent } from '../../shared/components/social-icon/social-icon.component';
 
@@ -39,11 +41,14 @@ export class ToolbarComponent {
   readonly configService = inject(ConfigService);
   private readonly translateService = inject(TranslateService);
   private readonly languageService = inject(LanguageService);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
   private readonly elementRef = inject(ElementRef<HTMLElement>);
 
   readonly currentLanguage = this.languageService.language;
   readonly currentTheme = this.themeService.theme;
   readonly isLogoIconsOpen = signal(false);
+  readonly isAuthenticated = this.authService.isAuthenticated;
   
   // Доступні мови
   languages: { code: Language; label: string }[] = [
@@ -73,6 +78,16 @@ export class ToolbarComponent {
    */
   changeLanguage(language: Language): void {
     this.languageService.setLanguage(language);
+  }
+
+  navigateToLogin(): void {
+    this.router.navigate(['/login']);
+  }
+
+  logout(): void {
+    this.authService.logout().subscribe({
+      next: () => this.router.navigate(['/login'])
+    });
   }
 
   toggleLogoIcons(event: Event): void {

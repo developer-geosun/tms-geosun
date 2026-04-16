@@ -90,6 +90,76 @@ h1 {
   gap: 8px;
 }
 
+/* Підвищуємо контраст на темних темах для елементів login-форми */
+:host-context(.theme-magenta-violet),
+:host-context(.theme-cyan-orange) {
+  .login-card {
+    background: rgba(28, 28, 36, 0.92);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+  }
+
+  h1 {
+    color: #f3f6ff;
+  }
+
+  .subtitle {
+    color: rgba(243, 246, 255, 0.85);
+  }
+
+  .error-text {
+    color: #ff8a80;
+  }
+
+  .success-text {
+    color: #7ee0a1;
+  }
+}
+
+:host-context(.theme-magenta-violet) ::ng-deep .login-form .mat-mdc-form-field,
+:host-context(.theme-cyan-orange) ::ng-deep .login-form .mat-mdc-form-field {
+  .mdc-text-field--outlined {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .mdc-text-field__input {
+    color: #f3f6ff !important;
+  }
+
+  .mdc-floating-label {
+    color: rgba(243, 246, 255, 0.9) !important;
+  }
+
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-color: rgba(243, 246, 255, 0.45) !important;
+  }
+
+  &.mat-form-field-invalid {
+    .mdc-text-field__input {
+      color: #ffd9d6 !important;
+    }
+
+    .mdc-floating-label {
+      color: #ff8a80 !important;
+    }
+
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: #ff6b6b !important;
+    }
+  }
+
+  &.mat-focused.mat-form-field-invalid {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: #ff5252 !important;
+    }
+  }
+}
+
 @media (max-width: 600px) {
   .login-page {
     padding: 16px 12px;
